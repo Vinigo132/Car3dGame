@@ -51,38 +51,34 @@ public class CarController : MonoBehaviour
         HandleSteering();
         UpdateWheels();
         RestartPosition(); 
-        Lightining();
+        
 
 
+    }
+    
+    void Update(){
+    	   Lightining();
     }
 
     private void Lightining()
     {
-       if(Input.GetKey(KeyCode.L))
-       {
-           if(isLightining){
-            Debug.Log("apaga");
-             frontLeftLight.enabled = false;
-             frontRightLight.enabled = false;
-             backLeftLight.enabled = false;
-             backRightLight.enabled = false;
-             isLightining = false;
-           }else{
-            Debug.Log("acende");
-            frontLeftLight.enabled = true;
-            frontRightLight.enabled = true;
-            backLeftLight.enabled = true;
-            backRightLight.enabled = true;
-            isLightining = true;
-           }
-       }
+    	if (Input.GetKeyDown(KeyCode.L)) { // Detecta apenas o primeiro clique
+        isLightining = !isLightining; // Inverte o estado da luz
+
+        frontLeftLight.enabled = isLightining;
+        frontRightLight.enabled = isLightining;
+        backLeftLight.enabled = isLightining;
+        backRightLight.enabled = isLightining;
+
+        Debug.Log(isLightining ? "Acende" : "Apaga");
+    	}   
     }
 
     private void RestartPosition()
     {
        if(Input.GetKey("r"))
        {
-           Debug.Log("resta");
+           Debug.Log("reseta");
            transform.position = new Vector3(3f, transform.position.y, transform.position.z);
            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
        }
