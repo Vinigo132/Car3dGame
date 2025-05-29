@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class CameraFollow : MonoBehaviour
+
+public class CameraTracking : MonoBehaviour
 {
     public Transform carro;
     public Vector3 offset = new Vector3(0, 10, -15);

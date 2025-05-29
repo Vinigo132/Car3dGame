@@ -109,7 +109,21 @@ public class NetWorkController : MonoBehaviourPunCallbacks
 
         //Instantiate(myPlayer, myPlayer.transform.position, myPlayer.transform.rotation);
 
-        PhotonNetwork.Instantiate(myPlayer.name, myPlayer.transform.position, myPlayer.transform.rotation, 0);
+        //PhotonNetwork.Instantiate(myPlayer.name, myPlayer.transform.position, myPlayer.transform.rotation, 0);
+        GameObject meuCarro = PhotonNetwork.Instantiate(myPlayer.name, myPlayer.transform.position, myPlayer.transform.rotation, 0);
+
+        // Verifica se o carro instanciado é do jogador local
+        PhotonView view = meuCarro.GetComponent<PhotonView>();
+        if (view.IsMine)
+        {
+            CameraFollow cameraFollow = Camera.main.GetComponent<CameraFollow>();
+            if (cameraFollow != null)
+            {
+                cameraFollow.SetTarget(meuCarro.transform);
+            }
+        }
+
+
         InfoPlayer();
     }
 
@@ -135,7 +149,7 @@ public class NetWorkController : MonoBehaviourPunCallbacks
             Debug.Log(" MASTER CLIENT = " + item.IsMasterClient);
             Debug.Log(" PLAYER ACTIVE = " + item.IsInactive);
             Debug.Log(" SERVER ID = " + item.UserId);
-            TextInfo.text = item.NickName + item.IsMasterClient;
+            TextInfo.text = item.NickName; //+ item.IsMasterClient;
         }
         //foreach (var item in roomList)
         //{
