@@ -6,7 +6,7 @@ using Photon.Realtime;
 using UnityEngine.UI;
 public class PlayerController : MonoBehaviourPun
 {    public float playerSpeed = 5f;
-    Rigidbody2D rigidB2D;
+    Rigidbody rigidB;
     PhotonView photonVieww;
 
     [Header("Health")]
@@ -21,22 +21,26 @@ public class PlayerController : MonoBehaviourPun
 
     void Start()
     {
-        rigidB2D = GetComponent<Rigidbody2D>();
+        rigidB = GetComponent<Rigidbody>();
         photonVieww = GetComponent<PhotonView>();
         HealthManager(playerHealthMax);
+
+        Transform textTransform = transform.Find("CanvasCar/TextnameCar");
+        Text nameText = textTransform.GetComponent<Text>();
+        nameText.text = PhotonNetwork.NickName;
     }
     void Update()
     {
         if(photonView.IsMine)
         {
-            PlayerMove();
-            PlayerTurn();
+            // PlayerMove();
+            // PlayerTurn();
             Shooting();
         }
     }
     void Shooting()
     {
-        if(Input.GetMouseButtonDown(0))
+        if(Input.GetKeyDown(KeyCode.F))
         {
             PhotonNetwork.Instantiate(bulletGoPhotonView.name, spawBullet.transform.position, spawBullet.transform.rotation, 0);
         }
@@ -64,30 +68,30 @@ public class PlayerController : MonoBehaviourPun
     }
     void HealthManager(float value)
     {
-        playerHealtCurrent += value;
-        playerHealthFill.fillAmount = playerHealtCurrent / 100f;
-        Debug.Log("pendendo vida");
+        playerHealtCurrent -= value;
+        playerHealthFill.fillAmount = playerHealtCurrent / playerHealthMax;
+        Debug.Log("perdendo vida");
     }
-    void PlayerMove()
-    {
-        var x = Input.GetAxis("Horizontal");
-        var y = Input.GetAxis("Vertical");
+    // void PlayerMove()
+    // {
+    //     var x = Input.GetAxis("Horizontal");
+    //     var y = Input.GetAxis("Vertical");
 
-        rigidB2D.linearVelocity = new Vector2(x , y);
-    }
-    void  PlayerTurn()
-    {
-        Vector3 mousePosition = Input.mousePosition;
-        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        Vector2 direction = new Vector2(mousePosition.x - transform.position.x , mousePosition.y - transform.position.y);
-        transform.up = direction;
-    }
+    //     rigidB2D.linearVelocity = new Vector2(x , y);
+    // }
+    // void  PlayerTurn()
+    // {
+    //     Vector3 mousePosition = Input.mousePosition;
+    //     mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+    //     Vector2 direction = new Vector2(mousePosition.x - transform.position.x , mousePosition.y - transform.position.y);
+    //     transform.up = direction;
+    // }
     //Realocar Player
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if(other.CompareTag("Barriers"))
-        {
-            transform.position = new Vector3(0, 1, 0);
-        }
-    }
+    // private void OnTriggerEnter2D(Collider2D other)
+    // {
+    //     if(other.CompareTag("Barriers"))
+    //     {
+    //         transform.position = new Vector3(0, 1, 0);
+    //     }
+    // }
 }

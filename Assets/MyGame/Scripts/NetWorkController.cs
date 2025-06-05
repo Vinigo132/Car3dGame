@@ -121,6 +121,10 @@ public class NetWorkController : MonoBehaviourPunCallbacks
             {
                 cameraFollow.SetTarget(meuCarro.transform);
             }
+
+            // Image healthFillImage = GameObject.Find("HealthFill").GetComponent<Image>();
+            // PlayerController pc = meuCarro.GetComponent<PlayerController>();
+            // pc.playerHealthFill = healthFillImage;
         }
 
 
